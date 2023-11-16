@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
-import Button from '@/components/Button'
+import {Button} from '@/components/Button'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
 import { useSession, signOut } from 'next-auth/react'
@@ -16,16 +16,19 @@ export const NavBar = () => {
         }, 1000)
     }
     
-
     return (
         <>
             <div className='float-right p-5 space-x-2'>
             <label className='text-white'>{session?.user.name}</label>
             {
             status === 'authenticated' ?
-                <Button name='Logout' width={null} bgColor='red' func={logoutButton}/>
+                <Button size='default' variant='destructive' onClick={logoutButton}>
+                    Logout
+                </Button>
             :
-                <Button name='Login' width={null} bgColor='red' func={() => router.push('/login')}/>
+                <Button size='default' variant='default' onClick={() => router.push('/login')}>
+                    Login
+                </Button>
             }
             </div>
             <Toaster position="top-center" reverseOrder={false} />

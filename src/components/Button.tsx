@@ -1,18 +1,42 @@
-import { FC } from "react";
-import { cva } from "class-variance-authority";
+import { ButtonHTMLAttributes, FC, forwardRef } from "react";
+import { VariantProps, cva } from "class-variance-authority";
+import { cn } from "@/lib/utils"
 
-interface ButtonProps {}
+const buttonVariants = cva(
+    "font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
+    {
+        variants: {
+            variant: {
+                default: 
+                    'bg-blue-500 text-white hover:bg-blue-700',
+                destructive:
+                    'bg-red-500 text-white hover:bg-red-700',
+                secondary:
+                    'bg-purple-500 text-white hover:bg-purple-700',
+            },
+            size: {
+                default:
+                    'py-2 px-5 rounded-md',
+                long:
+                    'w-full rounded-md',
+                sm: 
+                    'px-3 rounded-md',
+                lg:
+                    'px-6 rounded-md'
+            }
+        },
+        defaultVariants: {
+            variant: 'default',
+            size: 'default'
+        }
+    }
+)
 
-const buttonVariants = cva([])
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, 
+    VariantProps<typeof buttonVariants> {}
 
-const Button: FC<ButtonProps> = ({name, width, bgColor, func}) => {
-    return (
-        <button onClick={func}
-                className={`bg-${bgColor}-500 hover:bg-${bgColor}-700 w-${width} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
-                type='button'>
-            {name}
-        </button>
-    )
-}
+const Button: FC<ButtonProps> = (({className, size, variant, ...props}) => {
+    return <button className={cn(buttonVariants({className, size, variant}))} {...props}/>
+})
 
-export default Button;
+export {Button, buttonVariants};

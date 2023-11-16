@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast, {Toaster} from 'react-hot-toast';
 import Alert from '@/components/Alert';
-import Button from '@/components/Button';
+import {Button} from '@/components/Button';
 
 type Field = {
     name: string,
@@ -52,7 +52,7 @@ export default function SignUp() {
     }
 
     return(
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <main className="flex min-h-screen flex-col items-center justify-center p-10">
             <div className="w-full max-w-sm">
                 <form className="bg-white shadow-md px-8 pt-6 pb-8 mb-4 rounded-2xl">
                     <div className="mb-6">
@@ -67,8 +67,7 @@ export default function SignUp() {
                             </label>
                         </div>
                         <div className="md:w-2/3">
-                            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
-                                   id="inline-full-name" 
+                            <input className="shadow border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-500" 
                                    type="text"
                                    value={field.name}
                                    onChange={(e) => setField({...field, name: e.target.value})}
@@ -83,12 +82,11 @@ export default function SignUp() {
                             </label>
                         </div>
                         <div className="md:w-2/3">
-                            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
-                                   id="inline-email" 
-                                   type="text"
+                            <input className="shadow border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-500"
+                                   type="email"
+                                   placeholder='example@example.com'
                                    value={field.email}
                                    onChange={(e) => setField({...field, email: e.target.value})}
-                                   required
                             />
                         </div>
                     </div>
@@ -99,11 +97,10 @@ export default function SignUp() {
                             </label>
                         </div>
                         <div className="md:w-2/3">
-                            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
-                                   id="inline-phone" 
+                            <input className="shadow border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-500" 
                                    type="number"
                                    value={field.phone}
-                                   placeholder='08xxxxxxxx'
+                                   placeholder='123456789'
                                    onChange={(e) => setField({...field, phone: e.target.valueAsNumber})}
                             />
                         </div>
@@ -115,8 +112,7 @@ export default function SignUp() {
                             </label>
                         </div>
                         <div className="md:w-2/3">
-                            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
-                                   id="inline-password" 
+                            <input className="shadow border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-500" 
                                    type="password"
                                    value={field.password}
                                    onChange={(e) => setField({...field, password: e.target.value})}
@@ -131,8 +127,7 @@ export default function SignUp() {
                             </label>
                         </div>
                         <div className="md:w-2/3">
-                            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" 
-                                   id="inline-confirm-password" 
+                            <input className="shadow border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-500" 
                                    type="password"
                                    value={field.confirmPassword}
                                    onChange={(e) => setField({...field, confirmPassword: e.target.value})}
@@ -141,10 +136,12 @@ export default function SignUp() {
                         </div>
                     </div>
                     {alert ? <Alert showAlert={showAlert} message=' Please make sure your password!'/> : null}
-                    <div className="md:flex md:items-center">
+                    <div className="flex items-center justify-center md:flex md:items-center">
                         <div className="md:w-1/3"></div>
                         <div className="md:w-2/3">
-                            <Button name='Sign Up' width={null} bgColor='purple' func={handleLoginSignUpButton}/>
+                            <Button size='default' variant='secondary' onClick={handleLoginSignUpButton}>
+                                Sign Up
+                            </Button>
                             <Toaster position="top-center" reverseOrder={false} />
                         </div>
                     </div>
