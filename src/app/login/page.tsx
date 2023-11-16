@@ -43,7 +43,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-5">
-      <div className="w-full lg:w-[50%] xl:w-[40%] 2xl:w-[30%]">
+      <div className="w-full min-[500px]:w-[80%] sm:w-[65%] md:w-[55%] lg:w-[45%] xl:w-[40%] 2xl:w-[30%]">
         <form className="bg-white px-10 pt-6 pb-8 mb-4 rounded-2xl shadow-2xl">
           <div className="mb-6">
             <label className="block text-black text-2xl font-bold mb-2">
