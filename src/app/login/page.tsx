@@ -30,7 +30,7 @@ export default function Login() {
     } catch (error: any) {
       console.log(error)
     }
-  }, [])
+  }, [token])
 
   const handleLoginButton = async (e) => {
     e.preventDefault()
