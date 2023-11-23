@@ -59,7 +59,7 @@ export default function Login() {
     } else {
       setToken('')
     }
-  })
+  }, [])
 
   useEffect(() => {
     if(token !== '') {

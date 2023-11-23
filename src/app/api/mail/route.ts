@@ -1,4 +1,3 @@
-import { Email } from "@/libs/nodemailer";
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/libs/prisma'
 
@@ -19,10 +18,6 @@ export async function POST(request: NextRequest) {
         if(userExist){
             return NextResponse.json({error: "User already exists"}, {status: 400})
         }
-
-        await Email(subject, email, (emailCallback: any) => {
-            console.log(emailCallback.envelope.to[0])
-        })
 
         return NextResponse.json({
             message: "Welcome to My Apps!",
