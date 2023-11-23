@@ -3,10 +3,10 @@ import {NextAuthOptions} from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import NextAuth from 'next-auth/next'
-import prisma from '@/lib/prisma'
+import prisma from '@/libs/prisma'
 import bcryptjs from 'bcryptjs'
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'credentials',
@@ -40,6 +40,10 @@ const authOptions: NextAuthOptions = {
                 //check if passsword is valid
                 const validPassword = await bcryptjs.compare(credentials.password, userExisted.password)
                 if(!validPassword) {
+                    return null;
+                }
+
+                if(userExisted.emailVerified === false) {
                     return null;
                 }
                 
@@ -77,8 +81,8 @@ const authOptions: NextAuthOptions = {
                         ...token,
                         id: user.id,
                         name: user.name,
-                        email: user.email,
                         phone: 0,
+                        email: user.email,
                         password: '',
                         image: ''
                     }
@@ -87,9 +91,10 @@ const authOptions: NextAuthOptions = {
                 const newUser = await prisma.user.create({
                     data: {
                         name: user.name,
-                        email: user.email,
                         phone: 0,
+                        email: user.email,
                         password: '',
+                        emailVerified: true,
                         image: ''
                     }
                 })

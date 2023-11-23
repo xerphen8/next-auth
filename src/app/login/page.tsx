@@ -1,7 +1,7 @@
 "use client"
 
-import React, {useRef, useState} from 'react'
-import { ValidationEmail } from '@/lib/utils'
+import React, {useEffect, useRef, useState} from 'react'
+import { ValidationEmail } from '@/libs/utils'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import toast, {Toaster} from 'react-hot-toast'
@@ -9,11 +9,9 @@ import {Button} from '@/components/Button'
 import axios from 'axios'
 import { useSession, signIn } from 'next-auth/react'
 
-export default function Home() {
+export default function Login() {
   const router = useRouter()
-  const ref = useRef<null | HTMLButtonElement>()
-  // const {data: session, status, update} = useSession()
-  // console.log('useSession', session)
+  const {data: session, status, update} = useSession()
   const [field, setField] = useState<{
     email: string,
     password: string
@@ -22,7 +20,20 @@ export default function Home() {
     password: ''
   })
 
-  const handleLoginButton = async () => {
+  const [token, setToken] = useState<String>('');
+
+  const verifyUserToken = async () => {
+    try {
+      await axios.post('/api/users/verify', {
+        token
+      })
+    } catch (error: any) {
+      console.log(error)
+    }
+  }
+
+  const handleLoginButton = async (e) => {
+    e.preventDefault()
     if(ValidationEmail(field.email) && field.password !== '') {
       try {
         signIn('credentials', {
@@ -34,12 +45,27 @@ export default function Home() {
           router.push('/')
         }, 1000);
       } catch (error) {
-        toast.error(error.response.data.error)
+        toast.error('User does not exist')
       }
     } else{
       toast.error('Email or Password is invalid')
     }
   }
+
+  useEffect(() => {
+    const urlToken = window.location.search.split("=")[1]
+    if(urlToken !== '') {
+      setToken(urlToken)
+    } else {
+      setToken('')
+    }
+  })
+
+  useEffect(() => {
+    if(token !== '') {
+      verifyUserToken()
+    }
+  }, [token])
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-5">

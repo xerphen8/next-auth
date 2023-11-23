@@ -1,14 +1,14 @@
 import { getTokenData } from '@/helpers/tokenData'
 import { NextRequest, NextResponse } from 'next/server'
 import User from '@/models/userModels'
-import prisma from '@/lib/prisma'
+import prisma from '@/libs/prisma'
 
 export async function GET(request: NextRequest) {
     try {
-        const tokenEmail = getTokenData(request)
+        const token = getTokenData(request)
         const userAuth = await prisma.user.findUnique({
             where: {
-                email: tokenEmail
+                email: token
             },
             select: {
                 name: true,

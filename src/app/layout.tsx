@@ -1,14 +1,20 @@
 import '@/styles/globals.css'
-import NextAuthProviders from '../context/providers'
 import { ReactNode } from 'react'
+import { ReduxProviders } from '../context/reduxProvider'
+import NextAuthProvider from '../context/nextAuthProvider'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from './api/auth/[...nextauth]/route'
 
-export default function RootLayout({ children }: {children: ReactNode}) {
+export default async function RootLayout({ children }: {children: ReactNode}) {
+  const session = await getServerSession(authOptions)
   return (
     <html lang="en">
       <body>
-        <NextAuthProviders>
-          {children}
-        </NextAuthProviders>
+        <ReduxProviders>
+          <NextAuthProvider session={session}>
+            {children}
+          </NextAuthProvider>
+        </ReduxProviders>
       </body>
     </html>
   )

@@ -1,9 +1,11 @@
-import React from 'react'
+"use client"
+
+import React, {useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation'
 import {Button} from '@/components/Button'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
-import { useSession, signOut } from 'next-auth/react'
+import { useSession, signOut, signIn } from 'next-auth/react'
 
 export const NavBar = () => {
     const {data: session, status, update} = useSession()
@@ -19,7 +21,7 @@ export const NavBar = () => {
     return (
         <>
             <div className='float-right p-5 space-x-2'>
-            <label className='text-white'>{session?.user.name}</label>
+            <label className='text-white'>{session?.user.email}</label>
             {
             status === 'authenticated' ?
                 <Button size='default' variant='destructive' onClick={logoutButton}>
