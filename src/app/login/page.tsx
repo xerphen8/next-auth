@@ -55,17 +55,15 @@ export default function Login() {
   useEffect(() => {
     const urlToken = window.location.search.split("=")[1]
     if(urlToken !== '') {
-      setToken(urlToken)
+      if(token !== '') {
+        verifyUserToken()
+        setToken(urlToken)
+      }
     } else {
       setToken('')
     }
-  }, [])
 
-  useEffect(() => {
-    if(token !== '') {
-      verifyUserToken()
-    }
-  }, [])
+  }, [token])
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-5">
