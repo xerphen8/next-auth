@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import { ValidationEmail } from '@/libs/utils'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -22,7 +22,7 @@ export default function Login() {
 
   const [token, setToken] = useState<String>('');
 
-  const verifyUserToken = async () => {
+  const verifyUserToken = useCallback(async () => {
     try {
       await axios.post('/api/users/verify', {
         token
@@ -30,7 +30,7 @@ export default function Login() {
     } catch (error: any) {
       console.log(error)
     }
-  }
+  }, [])
 
   const handleLoginButton = async (e) => {
     e.preventDefault()
