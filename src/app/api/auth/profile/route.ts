@@ -1,6 +1,5 @@
 import { getTokenData } from '@/helpers/tokenData'
 import { NextRequest, NextResponse } from 'next/server'
-import User from '@/models/userModels'
 import prisma from '@/libs/prisma'
 
 export async function GET(request: NextRequest) {

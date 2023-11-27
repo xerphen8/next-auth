@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast, {Toaster} from 'react-hot-toast';
@@ -19,9 +19,7 @@ type Field = {
 }
 
 export default function SignUp() {
-    const dispatch = useDispatch<AppDispatch>()
-
-    const router = useRouter()
+    const ref = useRef()
     const [verification, setVerification] = useState<Boolean>(false)
     const [field, setField] = useState<Field>({
         email: '',
@@ -46,7 +44,6 @@ export default function SignUp() {
                 })
                 if(response.status == 200) {
                     setVerification(true)
-                    dispatch(verifyingAsync(field.password))
                     toast.success('Email verification was sent to your email.')
                 }
             } catch (error) {
@@ -115,7 +112,10 @@ export default function SignUp() {
                         <div className="flex items-center justify-center md:flex md:items-center">
                             <div className="md:w-1/3"></div>
                             <div className="md:w-2/3">
-                                <Button size='default' variant='secondary' onClick={handleLoginSignUpButton}>
+                                <Button className='flex' size='default' variant='secondary' onClick={handleLoginSignUpButton}>
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill='none' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        {/*  */}
+                                    </svg>
                                     Sign Up
                                 </Button>
                             </div>
