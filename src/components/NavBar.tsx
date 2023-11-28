@@ -1,11 +1,10 @@
 "use client"
 
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import { useRouter } from 'next/navigation'
 import {Button} from '@/components/Button'
-import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
-import { useSession, signOut, signIn } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 
 export const NavBar = () => {
     const {data: session, status, update} = useSession()

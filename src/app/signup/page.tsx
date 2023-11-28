@@ -1,16 +1,11 @@
 "use client"
 
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import toast, {Toaster} from 'react-hot-toast';
 import Alert from '@/components/Alert';
 import {Button} from '@/components/Button';
 import Link from 'next/link';
-import { AppDispatch } from '../store';
-
-import { useDispatch } from 'react-redux'
-import { verifyingAsync } from '@/features/auth';
 
 type Field = {
     email: string,
@@ -19,7 +14,6 @@ type Field = {
 }
 
 export default function SignUp() {
-    const ref = useRef()
     const [verification, setVerification] = useState<Boolean>(false)
     const [field, setField] = useState<Field>({
         email: '',
@@ -32,23 +26,33 @@ export default function SignUp() {
         setAlert(alert)
     }
 
+    const SignUpFunction = async () => {
+        try {
+            const response = await axios.post("/api/auth/signup", {
+                email: field.email,
+                password: field.password,
+            })
+            if(response.status == 200) {
+                setVerification(true)
+            }
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleLoginSignUpButton = async (event) => {
         event.preventDefault()
+        const SignUp = SignUpFunction()
+
         if(field.confirmPassword !== field.password) {
             setAlert(true)
         } else {
-            try {
-                const response = await axios.post("/api/users/signup", {
-                    email: field.email,
-                    password: field.password,
-                })
-                if(response.status == 200) {
-                    setVerification(true)
-                    toast.success('Email verification was sent to your email.')
-                }
-            } catch (error) {
-                toast.error(error.response.data.error)
-            }
+            toast.promise(SignUp, {
+                loading: <b>Wait a second...</b>,
+                success: <b>Email verification was sent to your email.</b>,
+                error: <b>Sign up failed</b>
+            })
         }
     }
 
@@ -113,9 +117,6 @@ export default function SignUp() {
                             <div className="md:w-1/3"></div>
                             <div className="md:w-2/3">
                                 <Button className='flex' size='default' variant='secondary' onClick={handleLoginSignUpButton}>
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill='none' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                        {/*  */}
-                                    </svg>
                                     Sign Up
                                 </Button>
                             </div>

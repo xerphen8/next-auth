@@ -7,11 +7,10 @@ import Image from 'next/image'
 import toast, {Toaster} from 'react-hot-toast'
 import {Button} from '@/components/Button'
 import axios from 'axios'
-import { useSession, signIn } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 
 export default function Login() {
   const router = useRouter()
-  const {data: session, status, update} = useSession()
   const [field, setField] = useState<{
     email: string,
     password: string
@@ -24,7 +23,7 @@ export default function Login() {
 
   const verifyUserToken = useCallback(async () => {
     try {
-      await axios.post('/api/users/verify', {
+      await axios.post('/api/auth/verify', {
         token
       })
     } catch (error: any) {
@@ -36,16 +35,20 @@ export default function Login() {
     e.preventDefault()
     if(ValidationEmail(field.email) && field.password !== '') {
       try {
-        signIn('credentials', {
+        const response = await signIn('credentials', {
           ...field,
           redirect: false,
         })
-        toast.success("Signin Success!")
-        setTimeout(() => {
-          router.push('/')
-        }, 1000);
+        if(response.status === 200) {
+          toast.success("Signin Success!")
+          setTimeout(() => {
+            router.push('/')
+          }, 1000);
+        } else {
+          toast.error(response.error)
+        }
       } catch (error) {
-        toast.error('User does not exist')
+        console.log(error)
       }
     } else{
       toast.error('Email or Password is invalid')
@@ -55,10 +58,8 @@ export default function Login() {
   useEffect(() => {
     const urlToken = window.location.search.split("=")[1]
     if(urlToken !== '') {
-      if(token !== '') {
-        verifyUserToken()
-        setToken(urlToken)
-      }
+      verifyUserToken()
+      setToken(urlToken)
     } else {
       setToken('')
     }

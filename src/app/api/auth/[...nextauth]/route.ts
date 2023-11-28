@@ -34,17 +34,17 @@ export const authOptions: NextAuthOptions = {
                 
                 //check if user doesn't exist
                 if(!userExisted){
-                    return null;
+                    throw new Error('User does not exist')
                 }
 
                 //check if passsword is valid
                 const validPassword = await bcryptjs.compare(credentials.password, userExisted.password)
                 if(!validPassword) {
-                    return null;
+                    throw new Error('Email or password is not valid')
                 }
 
                 if(userExisted.emailVerified === false) {
-                    return null;
+                    throw new Error('You have to verification first. Check your email.')
                 }
                 
                 return {
