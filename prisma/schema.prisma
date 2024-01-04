@@ -12,21 +12,26 @@ datasource db {
 
 //MODEL
 model User {
-  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
   name                  String?
   phone                 Int?
-  email                 String?   @unique
+  email                 String?    @unique
   password              String?
   emailVerified         Boolean?
-  verifyToken           String?   @unique
+  verifyToken           String?    @unique
   verifyTokenExpired    DateTime?
   forgotPassword        String?
   forgotPasswordExpired DateTime?
+  rating                Int?
+  followers             String[]
+  followings            String[]
   image                 String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
   accounts              Account[]
   sessions              Session[]
+  items                 ItemList[]
+  reviews               Reviews[]
 }
 
 model Account {
@@ -65,4 +70,34 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+}
+
+model GamesCatalog {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String     @unique
+  descroption String?
+  image       String?
+  createdAt   DateTime   @default(now())
+  items       ItemList[]
+}
+
+model ItemList {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String?       @db.ObjectId
+  gamesCatalogId String?       @db.ObjectId
+  title          String
+  description    String?
+  rating         Int?
+  image          String[]
+  createdAt      DateTime      @default(now())
+  user           User?         @relation(fields: [userId], references: [id])
+  GamesCatalog   GamesCatalog? @relation(fields: [gamesCatalogId], references: [id])
+}
+
+model Reviews {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  descriptions String?
+  userId       String?  @db.ObjectId
+  createdAt    DateTime @default(now())
+  User         User?    @relation(fields: [userId], references: [id])
 }

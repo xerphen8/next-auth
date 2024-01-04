@@ -9,6 +9,9 @@ export default async function RootLayout({ children }: {children: ReactNode}) {
   const session = await getServerSession(authOptions)
   return (
     <html lang="en">
+      <head>
+        <title>Twogather</title>
+      </head>
       <body>
         <ReduxProviders>
           <NextAuthProvider session={session}>

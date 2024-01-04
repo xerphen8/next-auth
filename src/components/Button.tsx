@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, FC, forwardRef } from "react";
+import { ButtonHTMLAttributes, FC } from "react";
 import { VariantProps, cva } from "class-variance-authority";
 import { cn } from "@/libs/utils"
 
@@ -19,11 +19,13 @@ const buttonVariants = cva(
                     'py-2 px-5 rounded-md',
                 long:
                     'w-full rounded-md',
+                parallelogram:
+                    'py-2 px-10 -skew-y-[20deg] rotate-[20deg]',
                 sm: 
                     'px-3 rounded-md',
                 lg:
                     'px-6 rounded-md'
-            }
+            },
         },
         defaultVariants: {
             variant: 'default',

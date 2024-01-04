@@ -3,7 +3,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import toast, {Toaster} from 'react-hot-toast';
-import Alert from '@/components/Alert';
 import {Button} from '@/components/Button';
 import Link from 'next/link';
 
@@ -20,11 +19,6 @@ export default function SignUp() {
         password: '',
         confirmPassword: ''
     })
-    const [alert, setAlert] = useState(false)
-
-    const showAlert = (alert: boolean) => {
-        setAlert(alert)
-    }
 
     const SignUpFunction = async () => {
         try {
@@ -41,13 +35,14 @@ export default function SignUp() {
         }
     }
 
-    const handleLoginSignUpButton = async (event) => {
+    const handleSignUpButton = async (event) => {
         event.preventDefault()
-        const SignUp = SignUpFunction()
 
         if(field.confirmPassword !== field.password) {
-            setAlert(true)
+            toast.error('Please make sure your confirmed password is a match.')
+            return true;
         } else {
+            const SignUp = SignUpFunction()
             toast.promise(SignUp, {
                 loading: <b>Wait a second...</b>,
                 success: <b>Email verification was sent to your email.</b>,
@@ -112,11 +107,10 @@ export default function SignUp() {
                                 />
                             </div>
                         </div>
-                        {alert ? <Alert showAlert={showAlert} message=' Please make sure your confirm password!'/> : null}
                         <div className="flex items-center justify-center md:flex md:items-center">
                             <div className="md:w-1/3"></div>
                             <div className="md:w-2/3">
-                                <Button className='flex' size='default' variant='secondary' onClick={handleLoginSignUpButton}>
+                                <Button className='flex' size='default' variant='secondary' onClick={handleSignUpButton}>
                                     Sign Up
                                 </Button>
                             </div>

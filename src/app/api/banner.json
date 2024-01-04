@@ -1,0 +1,9 @@
+{
+    "data": [
+        { "image": "/ml_banner.png" },
+        { "image": "/dota_banner.png" },
+        { "image": "/freefire_banner.png" },
+        { "image": "/seal_banner.png" },
+        { "image": "/ragnarok_banner.png" }
+    ]
+}
